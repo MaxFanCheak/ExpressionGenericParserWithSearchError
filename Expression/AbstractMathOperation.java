@@ -1,33 +1,28 @@
 package expression;
 
+import expression.exceptions.CalculateException;
 import expression.generic.Arithmetic;
 
-public abstract class AbstractMathOperation implements AllVariableExpression, MathOperationExpression {
-    private AllVariableExpression first;
-    private AllVariableExpression second;
+public abstract class AbstractMathOperation<T extends Number> implements CommonExpression<T>, MathOperationExpression {
+    protected final CommonExpression<T> first;
+    protected final CommonExpression<T> second;
+    protected final Arithmetic<T> oper;
 
-    public AbstractMathOperation(AllVariableExpression first, AllVariableExpression second) {
+    public AbstractMathOperation(CommonExpression<T> first, CommonExpression<T> second, Arithmetic<T> oper) {
         this.first = first;
         this.second = second;
+        this.oper = oper;
     }
 
-    public int evaluate(int x) {
-        return evaluate(first.evaluate(x), second.evaluate(x));
+    protected abstract T evaluate(T a, T b) throws CalculateException;
+
+    public T evaluate(T var) throws CalculateException {
+        return evaluate(first.evaluate(var), second.evaluate(var));
     }
 
-    public int evaluate(int x, int y, int z) {
+    public T evaluate(T x, T y, T z) throws CalculateException {
         return evaluate(first.evaluate(x, y, z), second.evaluate(x, y, z));
     }
-
-    protected abstract int evaluate(int x, int y);
-
-    @Override
-    public <T extends Number> T evaluate(Arithmetic<T> arithmetic, T x, T y, T z) {
-        return apply(arithmetic, first.evaluate(arithmetic, x, y, z), second.evaluate(arithmetic, x, y, z));
-    }
-
-    protected abstract <T extends Number> T apply(Arithmetic<T> arithmetic, T first, T second);
-
 
     @Override
     public String toString() {
@@ -45,7 +40,7 @@ public abstract class AbstractMathOperation implements AllVariableExpression, Ma
         if (o.getClass() != this.getClass()) {
             return false;
         }
-        AbstractMathOperation bo = (AbstractMathOperation) o;
+        AbstractMathOperation<T> bo = (AbstractMathOperation<T>) o;
         return bo.first.equals(this.first) && bo.second.equals(this.second);
     }
 

@@ -1,11 +1,13 @@
 package expression;
 
+import expression.exceptions.CalculateException;
 import expression.generic.Arithmetic;
 
-public class Divide extends AbstractMathOperation {
+public class Divide<T extends Number> extends AbstractMathOperation<T> {
 
-    public Divide(AllVariableExpression first, AllVariableExpression second) {
-        super(first, second);
+
+    public Divide(CommonExpression<T> first, CommonExpression<T> second, Arithmetic<T> oper) {
+        super(first, second, oper);
     }
 
     @Override
@@ -13,15 +15,9 @@ public class Divide extends AbstractMathOperation {
         return '/';
     }
 
-    @Override
-    public int evaluate(int numerator, int denominator) {
-        return numerator/denominator;
-    }
 
     @Override
-    protected <T extends Number> T apply(Arithmetic<T> arithmetic, T first, T second) {
-        return arithmetic.divide(first, second);
+    protected T evaluate(T a, T b) throws CalculateException {
+        return oper.divide(a, b);
     }
-
-
 }

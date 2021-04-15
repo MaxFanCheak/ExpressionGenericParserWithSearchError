@@ -1,10 +1,12 @@
 package expression;
 
+import expression.exceptions.CalculateException;
 import expression.generic.Arithmetic;
 
-public class Subtract extends AbstractMathOperation {
-    public Subtract(AllVariableExpression first, AllVariableExpression second) {
-        super(first, second);
+public class Subtract<T extends Number> extends AbstractMathOperation<T> {
+
+    public Subtract(CommonExpression<T> first, CommonExpression<T> second, Arithmetic<T> oper) {
+        super(first, second, oper);
     }
 
     @Override
@@ -13,14 +15,7 @@ public class Subtract extends AbstractMathOperation {
     }
 
     @Override
-    public int evaluate(int minuend, int subtrahend) {
-        return minuend-subtrahend;
+    protected T evaluate(T a, T b) throws CalculateException {
+        return oper.subtract(a, b);
     }
-
-    @Override
-    protected <T extends Number> T apply(Arithmetic<T> arithmetic, T first, T second) {
-        return arithmetic.subtract(first,second);
-    }
-
-
 }

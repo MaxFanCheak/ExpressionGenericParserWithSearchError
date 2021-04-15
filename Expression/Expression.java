@@ -1,8 +1,10 @@
 package expression;
 
+import expression.exceptions.CalculateException;
+
 /**
  * @author Georgiy Korneev (kgeorgiy@kgeorgiy.info)
  */
-public interface Expression extends ToMiniString {
-    int evaluate(int x);
+public interface Expression<T> extends ToMiniString {
+    T evaluate(T x) throws CalculateException;
 }

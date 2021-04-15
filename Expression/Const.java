@@ -1,22 +1,18 @@
 package expression;
 
-import expression.generic.Arithmetic;
+import expression.exceptions.CalculateException;
 
-public class Const implements AllVariableExpression {
-    private final Integer x;
+public class Const<T extends Number> implements CommonExpression<T> {
+    private final T value;
 
-    public Const(int x) {
-        this.x=x;
+    public Const(T value) {
+        this.value = value;
     }
 
-    @Override
-    public int evaluate(int x) {
-        return evaluate(x,0,0);
-    }
 
     @Override
     public String toString() {
-        return x.toString();
+        return value.toString();
     }
 
     @Override
@@ -29,21 +25,21 @@ public class Const implements AllVariableExpression {
             return false;
         }
 
-        Const c = (Const) o;
-        return c.x.equals(x);
+        Const<?> c = (Const<?>) o;
+        return c.value.equals(value);
     }
     public int hashCode() {
-        return Integer.hashCode(x);
+        return value.hashCode();
     }
 
     @Override
-    public <T extends Number> T evaluate(Arithmetic<T> arithmetic, T x, T y, T z) {
-        return arithmetic.cast(this.x);
+    public T evaluate(T x) throws CalculateException {
+        return value;
     }
 
     @Override
-    public int evaluate(int x, int y, int z) {
-        return this.x;
+    public T evaluate(T x, T y, T z) {
+        return value;
     }
 }
 

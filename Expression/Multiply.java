@@ -1,10 +1,12 @@
 package expression;
 
+import expression.exceptions.CalculateException;
 import expression.generic.Arithmetic;
 
-public class Multiply extends AbstractMathOperation {
-    public Multiply(AllVariableExpression first, AllVariableExpression second) {
-        super(first, second);
+public class Multiply<T extends Number> extends AbstractMathOperation<T> {
+
+    public Multiply(CommonExpression<T> first, CommonExpression<T> second, Arithmetic<T> oper) {
+        super(first, second, oper);
     }
 
     @Override
@@ -12,15 +14,9 @@ public class Multiply extends AbstractMathOperation {
         return '*';
     }
 
-    @Override
-    public int evaluate(int first, int second) {
-        return first*second;
-    }
 
     @Override
-    protected <T extends Number> T apply(Arithmetic<T> arithmetic, T first, T second) {
-        return arithmetic.multiply(first,second);
+    protected T evaluate(T a, T b) throws CalculateException {
+        return oper.multiply(a, b);
     }
-
-
 }

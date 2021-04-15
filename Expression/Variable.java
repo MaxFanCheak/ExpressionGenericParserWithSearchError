@@ -1,16 +1,14 @@
 package expression;
 
-import expression.generic.Arithmetic;
+import expression.exceptions.CalculateException;
+import java.util.Objects;
 
-public class Variable implements AllVariableExpression {
+public class Variable<T> implements CommonExpression<T> {
     private String var;
     public Variable(String var) {
         this.var=var;
     }
-    @Override
-    public int evaluate(int x) {
-        return evaluate(x,0,0);
-    }
+
     @Override
     public String toString() {
         return this.var;
@@ -31,15 +29,14 @@ public class Variable implements AllVariableExpression {
         return toString().hashCode();
     }
 
+
     @Override
-    public <T extends Number> T evaluate(Arithmetic<T> arithmetic, T x, T y, T z) {
-        if(var.equals("x")) return x;
-        if(var.equals("y")) return y;
-        else return z;
+    public T evaluate(T x) throws CalculateException {
+        return x;
     }
 
     @Override
-    public int evaluate(int x, int y, int z) {
+    public T evaluate(T x, T y, T z) {
         if(var.equals("x")) return x;
         if(var.equals("y")) return y;
         else return z;
